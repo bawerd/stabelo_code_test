@@ -1,3 +1,129 @@
 .title {
   color: red; /* Just an example .. */
 }
+
+#elevators {
+    display: grid;
+    grid-template-columns: repeat(6, 30px);
+    grid-template-rows: repeat(20, 30px);
+    position: absolute;
+}
+
+.elevator {
+    grid-row: 1 / -1;   
+}
+
+.floor {
+    text-align: center;
+    font-family: Futura;
+    color: #d65624;
+    background-color: #008d76;
+    border: 0.5px solid purple;
+    height: 30px;
+    width: 30px;
+}
+
+.car {
+ 		position: relative;
+    bottom: 30px;
+    z-index: 100;
+    width: 30px;
+    height: 30px;
+    background-image: url('../../img/elevator.png');
+}
+
+
+#panel {
+ 
+}
+
+.button-floor {
+    height: 23px;
+}
+
+.button {
+    border: none;
+    border-radius: 50%;
+    height: 20px;
+    width: 20px;
+    background-color: #26253d;
+    cursor: pointer;
+}
+
+.button:hover {
+    background-color: #c73b65;
+}
+
+.button:active {
+    background-color: #9e9937;
+}
+
+.button.on {
+   background-color: #763051; 
+}
+
+.button.on:hover {
+    background-color: #c73b65;
+}
+
+.button.on:active {
+    background-color: #9e9937;
+}
+
+.button > .up {
+	width: 0; 
+	height: 0; 
+	border-left: 4px solid transparent;
+	border-right: 5px solid transparent;
+	
+	border-bottom: 7px solid #ffffff;
+}
+
+.button > .up:hover {
+	border-bottom: 7px solid #fae60a;
+}
+
+.button > .up:active {
+  border-bottom: 7px solid #c73b65; 
+}
+
+.button.on > .up {
+	border-bottom: 7px solid #9e9937;
+}
+
+.button.on > .up:hover {
+	border-bottom: 7px solid #fae60a;
+}
+
+.button.on > .up:active {
+  border-bottom: 7px solid #c73b65; 
+}
+
+.button > .down {
+	width: 0; 
+	height: 0; 
+	border-left: 4px solid transparent;
+	border-right: 5px solid transparent;
+	
+	border-top: 7px solid white;
+}
+
+.button > .down:hover {
+	border-top: 7px solid #fae60a;
+}
+
+.button > .down:active {
+  border-top: 7px solid #c73b65; 
+}
+
+.button.on > .down {
+	border-top: 7px solid #9e9937;
+}
+
+.button.on > .down:hover {
+	border-top: 7px solid #fae60a;
+}
+
+.button.on > .down:active {
+  border-top: 7px solid #c73b65; 
+}
