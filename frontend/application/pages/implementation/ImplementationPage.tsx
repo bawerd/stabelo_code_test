@@ -15,6 +15,8 @@ const elevatorSystemReducer = (state, action) => {
             console.log('calling to floor', { ...state, elevators: action.data });
             let elevators = action.data;
             return { ...state, elevators: elevators }
+        case 'update':
+            return { ...state, elevators: action.data }
         default:
             return { ...state }
     }
@@ -56,20 +58,33 @@ const Elevator = ({ numFloors, floor, status }) => {
     const [carFloor, setCarFloor] = useState(floor);
     const previousCarFloor = usePrevious(carFloor);
 
+    const animeRef = useRef(null);
+
+    useEffect(() => {
+        console.log(animeRef.current);
+        if (animeRef.current) {
+            animeRef.current.anime.play();
+        }
+    })
+
     return (
         <div className={css.elevator}>
-            {allFloors.map((floorNum) => <div key={floorNum} className={css.floor}>{floorNum}</div>)
-            }
-            <Car fromFloor={previousCarFloor} toFloor={floor} />
-        </div >
+            {allFloors.map((floorNum) => <div key={floorNum} className={css.floor}>{floorNum}</div>)}
+            <Anime easing="easeInOutSine"
+                ref={animeRef}
+                loop={false}
+                duration={previousCarFloor ? 2000 * Math.abs(floor - previousCarFloor) : 0}
+                autoplay={false} bottom={floor * 31 + floor}
+                className={css.car}
+            ></Anime>
+        </div>
     );
 }
 
 const Car = (props: { fromFloor: number, toFloor: number }) => {
     let floorDelta = Math.abs(props.fromFloor - props.toFloor);
-    //let carRef = useRef();
 
-    console.log(props, 2000 * Math.abs(props.toFloor - props.fromFloor));
+    console.log("Car props: ", props, 2000 * Math.abs(props.toFloor - props.fromFloor));
 
 
     return <Anime easing="easeInOutQuad"
@@ -79,9 +94,6 @@ const Car = (props: { fromFloor: number, toFloor: number }) => {
 }
 
 const Panel = ({ floors, callElevator }) => {
-    //const socketUrl = 
-
-
     return (
         <div className={css.elevator}>
             {arrayFromInt(floors, 1).reverse().map((floorNum) =>

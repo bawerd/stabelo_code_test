@@ -26,7 +26,7 @@ class ElevatorSystem {
             const elevator: Elevator = {
                 id: idx + 1,
                 status: ElevatorStatus.Idle,
-                floor: Math.max(Math.round(Math.random() * numFloors), 1)
+                floor: 1 //Math.max(Math.round(Math.random() * numFloors), 1)
             };
 
             return elevator;
@@ -58,12 +58,15 @@ class ElevatorSystem {
             }
         }).reduce((prev, curr) => {
             /* choose the lowest one */
+            console.log("PREV: ", prev, "  CUR ", curr);
+            if (!prev) return curr;
+            if (!curr) return prev;
             return prev[1] <= curr[1] ? prev : curr;
         });
 
         console.log("CHOSEN CAR: ", chosenCar);
 
-        if (chosenCar.length == 0) {
+        if (chosenCar === undefined) {
             return Promise.reject("No car found");
         }
 
@@ -96,11 +99,11 @@ class ElevatorDispatch {
         }
 
         this.socket = websocket;
-
         this.socket.send(JSON.stringify(initAction));
     }
 
-    send(data) {
+    async send(data: any) {
+        console.log("SENDING to client: ", data);
         this.socket.send(JSON.stringify(data));
     }
 
@@ -122,6 +125,7 @@ class ElevatorDispatch {
 
         await this.es.selectElevator(floor).then((elevator) => {
             let elevators = this.es.updateElevator({ ...elevator, floor: floor, status: ElevatorStatus.Moving });
+
             this.send({
                 type: 'call',
                 data: elevators
@@ -130,7 +134,8 @@ class ElevatorDispatch {
             // Hacky way to reset elevator status.
             setTimeout(() => {
                 console.log("Timeout for elevator ", elevator.id, " after ", this.es.elevatorSpeedMs * Math.abs(floor - elevator.floor), "ms")
-                this.es.updateElevator({ ...elevator, floor: floor, status: ElevatorStatus.Idle });
+                let elevators = this.es.updateElevator({ ...elevator, floor: floor, status: ElevatorStatus.Idle });
+                //this.send({ type: 'update', data: elevators });
             }, this.es.elevatorSpeedMs * Math.abs(floor - elevator.floor));
 
         }, (err) => {
