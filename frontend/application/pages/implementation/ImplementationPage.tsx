@@ -69,11 +69,12 @@ const Car = (props: { fromFloor: number, toFloor: number }) => {
     let floorDelta = Math.abs(props.fromFloor - props.toFloor);
     //let carRef = useRef();
 
-    console.log(props);
+    console.log(props, 2000 * Math.abs(props.toFloor - props.fromFloor));
+
 
     return <Anime easing="easeInOutQuad"
         loop={false}
-        duration={props.fromFloor ? 1000 : 0}
+        duration={props.fromFloor ? 2000 * Math.abs(props.toFloor - props.fromFloor) : 0}
         autoplay={true} bottom={props.toFloor * 31 + props.toFloor} className={css.car}></Anime>
 }
 

@@ -121,11 +121,18 @@ class ElevatorDispatch {
         console.log("executing callAction with arg: ", floor);
 
         await this.es.selectElevator(floor).then((elevator) => {
-            let elevators = this.es.updateElevator({ ...elevator, floor: floor });
+            let elevators = this.es.updateElevator({ ...elevator, floor: floor, status: ElevatorStatus.Moving });
             this.send({
                 type: 'call',
                 data: elevators
             });
+
+            // Hacky way to reset elevator status.
+            setTimeout(() => {
+                console.log("Timeout for elevator ", elevator.id, " after ", this.es.elevatorSpeedMs * Math.abs(floor - elevator.floor), "ms")
+                this.es.updateElevator({ ...elevator, floor: floor, status: ElevatorStatus.Idle });
+            }, this.es.elevatorSpeedMs * Math.abs(floor - elevator.floor));
+
         }, (err) => {
             this.send({ type: 'err', data: err });
             return;
