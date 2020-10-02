@@ -51,7 +51,7 @@ class ElevatorSystem {
 
     private async closestIdleCar(floor: number) {
         let chosenCar = this.elevators.map((e, i) => {
-            if (e.status === ElevatorStatus.Idle) {
+            if (e.status == ElevatorStatus.Idle) {
                 /* find the idle cars and calculate distance to floor */
                 let floorDelta = Math.abs(floor - e.floor);
                 return [i, floorDelta]
