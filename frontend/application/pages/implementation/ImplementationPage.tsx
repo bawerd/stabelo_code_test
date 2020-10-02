@@ -44,7 +44,7 @@ const ImplementationPage = () => {
     return (
         <>
             <div id={css.elevators}>
-                {state.elevators && (state.elevators).map((elevator) => <Elevator key={elevator.id} numFloors={state.numFloors} {...elevator} />)}
+                {state.elevators && (state.elevators).map((elevator) => <Elevator key={elevator.id} speed={state.elevatorSpeedMs} numFloors={state.numFloors} {...elevator} />)}
                 <div id={css.panel}><Panel callElevator={callElevator} floors={state.numFloors} /></div>
             </div>
         </>
@@ -52,7 +52,7 @@ const ImplementationPage = () => {
 }
 
 
-const Elevator = ({ numFloors, floor, status }) => {
+const Elevator = ({ numFloors, floor, status, speed }) => {
 
     const allFloors = arrayFromInt(numFloors, 1).reverse();
     const [carFloor, setCarFloor] = useState(floor);
@@ -61,11 +61,10 @@ const Elevator = ({ numFloors, floor, status }) => {
     const animeRef = useRef(null);
 
     useEffect(() => {
-        console.log(animeRef.current);
         if (animeRef.current) {
             animeRef.current.anime.play();
         }
-    })
+    });
 
     return (
         <div className={css.elevator}>
@@ -73,7 +72,7 @@ const Elevator = ({ numFloors, floor, status }) => {
             <Anime easing="easeInOutSine"
                 ref={animeRef}
                 loop={false}
-                duration={previousCarFloor ? 2000 * Math.abs(floor - previousCarFloor) : 0}
+                duration={previousCarFloor ? speed * Math.abs(floor - previousCarFloor) : 0}
                 autoplay={false} bottom={floor * 31 + floor}
                 className={css.car}
             ></Anime>
@@ -89,7 +88,7 @@ const Car = (props: { fromFloor: number, toFloor: number }) => {
 
     return <Anime easing="easeInOutQuad"
         loop={false}
-        duration={props.fromFloor ? 2000 * Math.abs(props.toFloor - props.fromFloor) : 0}
+        duration={props.fromFloor ? 2000 * floorDelta : 0}
         autoplay={true} bottom={props.toFloor * 31 + props.toFloor} className={css.car}></Anime>
 }
 

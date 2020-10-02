@@ -17,7 +17,7 @@ class ElevatorSystem {
     elevatorSpeedMs: number;
     numElevators: number;
 
-    constructor(numFloors: number = 20, numElevators: number = 5, elevatorSpeedMs: number = 2000) {
+    constructor(numFloors: number = 20, numElevators: number = 5, elevatorSpeedMs: number = 500) {
         this.numFloors = numFloors;
         this.numElevators = numElevators;
         this.elevatorSpeedMs = elevatorSpeedMs;
@@ -26,7 +26,7 @@ class ElevatorSystem {
             const elevator: Elevator = {
                 id: idx + 1,
                 status: ElevatorStatus.Idle,
-                floor: 1 //Math.max(Math.round(Math.random() * numFloors), 1)
+                floor: Math.max(Math.round(Math.random() * numFloors), 1)
             };
 
             return elevator;

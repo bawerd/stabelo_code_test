@@ -29,7 +29,6 @@ app.ws.use(async (ctx, next) => {
         elevatorDispatch.dispatch(JSON.parse(message.toString()));
     });
 
-
     elevatorDispatch.init(ctx.websocket);
 
     await next();
